@@ -40,7 +40,6 @@ const getCodeInformation = async(zipCode) => {
         if (data.cod != 200){
             error.innerHTML = data.message
             setTimeout( _=>error.innerHTML='', 2000)
-            throw `${data.message}`
         }
         return data;
     }catch(error){
@@ -57,7 +56,7 @@ const postData=async (url ="", info={}) => {
 
     try{
        const newData =await res.json();
-       console.log(`you just saved`,newData)
+       console.log(`you date`,newData)
        return newData;
     } catch (error){
       console.log(error)
