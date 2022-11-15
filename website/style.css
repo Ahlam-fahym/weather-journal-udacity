@@ -4,16 +4,14 @@ body{
 }
 
 #app{
-    display: grid;
-    grid-auto-rows: minmax(150px, auto);
-    /* grid-template-columns:  */
-    height:100vh;
+height: 100vh;
     background: url(images/photo1.jpg);
     background-size: cover;
     justify-content: center;
     grid-gap: 1em;
     font-size: 20px;
     font-family: 'Oswald', sans-serif;
+padding-left: 20px;
 }
 
 .holder{
@@ -21,10 +19,11 @@ body{
 
 .entry{
     background: rgba(59, 74, 107, .4);
+    padding: 10px;
 }
 
 #entryHolder{
-
+    color: aliceblue
 }
 
 #date{
@@ -41,12 +40,11 @@ body{
 
 .headline {
     text-align: center;
-    margin: 20px;
     font-size: 49px;
     color: #ebda0ee8;
 }
 .title{
-
+    color: chocolate;
 }
 #error{
     background: #dd3434b0;
@@ -74,15 +72,16 @@ input{
 }
 
 button{
-    width: 400px;
-    height: 100px;
-    background: #3b4a6b;
+    width: 250px;
+    height: 30px;
+    background: #901d1d;
     color: #f0d43a;
-    font-size: 26px;
+    font-size: 20px;
     font-family: 'Oswald', sans-serif;
     border: none;
     box-shadow: 2px 4px 5px #444;
     cursor: pointer;
+    border-radius: 5px;
 }
 h1{
     font-size: 36px;
