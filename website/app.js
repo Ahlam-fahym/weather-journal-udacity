@@ -16,40 +16,40 @@ document.getElementById("generate").addEventListener("click", function () {
   const feelingCode = document.getElementById("feelings").value;
 
   getCodeInformation(zipCode)
-    .then((data) => {
-      console.log(data);
-      if (data) {
+    .then((teem) => {
+      console.log(teem);
+      if (teem) {
         const {
           main: { temp },
-        } = data;
-        const info = { newDate, temp, feelingCode };
-        postData(apiUrl + "/postData", info);
-        document.getElementById("entryHolder").style.opacity = 1;
+          name: city,
+        } = teem;
+        const inff = { newDate,city, temp, feelingCode };
+        post(apiUrl + "/postData", inff);
       }
     })
     .then(() => updateUI());
 });
 
-const getCodeInformation = async (zipCode) => {
+async function getCodeInformation(zipCode){
   try {
     const res = await fetch(baseUrl + zipCode + apiKey);
-    const data = await res.json();
+    const teem = await res.json();
 
-    if (data.cod != 200) {
+    if (teem.cod != 200) {
       error.innerHTML = data.message;
       setTimeout((_) => (error.innerHTML = ""), 2000);
     }
-    return data;
+    return teem;
   } catch (error) {
     console.log(error);
   }
 };
 
-const postData = async (url = "", info = {}) => {
+const post = async (url = "", inff = {}) => {
   const res = await fetch(url, {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify(info),
+    body: JSON.stringify(inff),
   });
 
   try {
@@ -61,7 +61,7 @@ const postData = async (url = "", info = {}) => {
   }
 };
 
-const updateUI = async () => {
+async function updateUI(){
   const res = await fetch(apiUrl + "/getAll");
   try {
     const saveData = await res.json();
