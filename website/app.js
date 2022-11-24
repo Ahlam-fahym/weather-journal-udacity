@@ -1,82 +1,89 @@
-// global
-let d = new Date();
-let newDate = d.getMonth() + "." + d.getDate() + "." + d.getFullYear();
+// create object 
+const { info } = app();
+// add event (click ) generate 
+document.getElementById("generate").addEventListener("click", info)
 
-const apiKey = ",&appid=f83f013481c764bb8e3c26c2599096da&units=metric";
-const baseUrl = "https://api.openweathermap.org/data/2.5/weather?zip=";
+// create  function weather application 
 
-const apiUrl = "http://localhost:4800";
-const date = document.getElementById("date");
-const temp = document.getElementById("temp");
-const content = document.getElementById("content");
-const error = document.getElementById("error");
+function app(){
 
-// event listener to add function to existing html dom element
-document.getElementById("generate").addEventListener("click", function () {
+// create a new date instance dynamically 
+       let d = new Date();
+       let newDate = d.getMonth() + 1 + "." + d.getDate() + "." + d.getFullYear();
 
-  // post data ti api
-  const zipCode = document.getElementById("zip").value;
-  const feelingCode = document.getElementById("feelings").value;
+//  // local var
+// Personal API Key for OpenWeatherMap API
 
-// post data for git zipCodeINformation
-  getCodeInformation(zipCode)
-    .then((teem) => {
-      console.log(teem);
-      if (teem) {
-        const {
-          main: { temp },
-        } = teem;
-        // post data to server and saving
-        const inff = { newDate, temp, feelingCode };
-        post(apiUrl + "/postData", inff);
-      }
-    })
-    .then(() => updateUI());// update UI
+        const apiKey = "&appid=f83f013481c764bb8e3c26c2599096da&units=metric";
+        const baseUrl = "https://api.openweathermap.org/data/2.5/weather?zip=";
+        const zipCode = document.getElementById("zip")
+        const feeling = document.getElementById("feelings")
 
-});
-// git zipCode information from api
-async function getCodeInformation(zipCode){
-  try {
-    const res = await fetch(baseUrl + zipCode + apiKey);
-    const teem = await res.json();
-// if data true and if data false
-    if (teem.cod != 200) {
-// send error in HTML
-      error.innerHTML = data.message;
-      setTimeout((_) => (error.innerHTML = ""), 2000);
+//  storage Data in function 
+
+       function info(){
+        getTemp(baseUrl, zipCode.value , apiKey)
+          // create the data
+        .then (data => postData({
+         date : newDate,
+          temp: data.main.temp,
+        feelings :feeling.value,
+      })
+    )
+    .then (() => updateUI())
+  }
+  // get weather temperature
+  async function getTemp(baseUrl,zipCode,apiKey){
+       const request = await fetch(
+      `${baseUrl}${zipCode}${apiKey}`
+      )
+
+     try{ 
+
+     const direct = await request.json();
+     return direct
+     } catch(error){
+      console.log(error)
     }
-    return teem;
-  } catch (error) {
-    console.log(error);
   }
-};
-// send data to server in post
-const post = async (url = "", inff = {}) => {
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify(inff),
-  });
 
-  try {
-    const newData = await res.json();
-    console.log(`you date`, newData);
-    return newData;
-    // error
-  } catch (error) {
-    console.log(error);
+// get postData in server.js
+/* Function to POST data */
+
+ const postData = async (data ={}) =>{
+
+   const request = await fetch('/postData',{
+
+       method: "POST",
+       headers: { "content-type": "application/json"},
+       body: JSON.stringify(data),
+     });
+
+    try{ 
+
+     const direct = await request.json();
+        console.log(direct)
+
+      } catch(error){
+     console.log(error)
   }
-};
-// update UI
-async function updateUI(){
+}
+/* Function to GET Web API Data*/
+
+const updateUI = async ()=>{
   // git data from server 
-  const res = await fetch(apiUrl + "/getAll");
-  try {
-    const saveData = await res.json();
-    date.innerHTML = saveData.newDate;
-    temp.innerHTML = saveData.temp;
-    content.innerHTML = saveData.feelingCode;
-  } catch (error) {
-    console.log(error);
+   const request = await fetch("/getAll");
+    try {
+/* Function to GET Project Data */
+     const saveData = await request.json();
+
+     document.getElementById('date').innerHTML =  `Day    ${saveData.date}`;
+     document.getElementById('temp').innerHTML =  `temperature is     ${saveData.temp}`;
+     document.getElementById('content').innerHTML =  `I feel is    ${saveData.feelings}`;
+
+      } catch (error) {
+     console.log(error);
+    }
   }
-};
+    return {info}
+}
